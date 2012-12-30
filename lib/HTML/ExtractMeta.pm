@@ -1,10 +1,44 @@
 package HTML::ExtractMeta;
 use Moose;
 
-our $VERSION = '0.01';
+=head1 NAME
+
+HTML::ExtractMeta - Extract meta data from HTML.
+
+=head1 VERSION
+
+Versjon 0.02
+
+=cut
+
+our $VERSION = '0.02';
 
 use Mojo::DOM;
 use Mojo::Util qw( squish );
+
+=head1 SYNOPSIS
+
+    use HTML::ExtractMeta;
+
+    my $EM = HTML::ExtractMeta->new(
+        html => $html, # required
+    );
+
+    print "Title       = " . $EM->get_title()       . "\n";
+    print "Description = " . $EM->get_description() . "\n";
+    print "URL         = " . $EM->get_url()         . "\n";
+    print "Image URL   = " . $EM->get_image_url()   . "\n";
+    print "Site name   = " . $EM->get_site_name()   . "\n";
+    print "Type        = " . $EM->get_type()        . "\n";
+    print "Keywords    = " . join( ', ', @{$EM->get_keywords()} ) . "\n";
+
+=head1 DESCRIPTION
+
+HTML::ExtractMeta is a convenience module for extracting useful meta data from
+HTML. It doesn't only look for the traditional meta tags, but also the newer
+ones like "og:foobar" and "twitter:foobar".
+
+=cut
 
 has 'html' => ( isa => 'Str', is => 'ro', required => 1, default => 1, reader => 'get_html' );
 
@@ -16,6 +50,22 @@ has 'image_url'   => ( isa => 'Str',           is => 'ro', lazy_build => 1, read
 has 'site_name'   => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_site_name'   );
 has 'type'        => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_type'        );
 has 'keywords'    => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, reader => 'get_keywords'    );
+
+=head1 METHODS
+
+=head2 new( %opts )
+
+Returns a new HTML::ExtractMeta instance. Requires HTML as input argument;
+
+    my $EM = HTML::ExtractMeta->new(
+        html => $html,
+    );
+
+=head2 get_dom()
+
+Returns the Mojo::DOM object for the current HTML.
+
+=cut
 
 sub _build_DOM {
     my $self = shift;
@@ -59,6 +109,12 @@ sub _get_meta_content {
     return '';
 }
 
+=head2 get_title()
+
+Returns the HTML's title.
+
+=cut
+
 sub _build_title {
     my $self = shift;
 
@@ -70,6 +126,12 @@ sub _build_title {
 
     return $self->_get_meta_content( \@metas ) || $self->_get_element_text( 'title' ) || '';
 }
+
+=head2 get_description()
+
+Returns the HTML's description.
+
+=cut
 
 sub _build_description {
     my $self = shift;
@@ -83,6 +145,12 @@ sub _build_description {
     return $self->_get_meta_content( \@metas ) || $self->_get_element_text( 'description' ) || '';
 }
 
+=head2 get_url()
+
+Returns the HTML's URL.
+
+=cut
+
 sub _build_url {
     my $self = shift;
 
@@ -93,6 +161,12 @@ sub _build_url {
 
     return $self->_get_meta_content( \@metas );
 }
+
+=head2 get_image_url()
+
+Returns the HTML's image URL.
+
+=cut
 
 sub _build_image_url {
     my $self = shift;
@@ -105,6 +179,12 @@ sub _build_image_url {
     return $self->_get_meta_content( \@metas );
 }
 
+=head2 get_site_name()
+
+Returns the HTML's site name.
+
+=cut
+
 sub _build_site_name {
     my $self = shift;
 
@@ -116,6 +196,12 @@ sub _build_site_name {
     return $self->_get_meta_content( \@metas );
 }
 
+=head2 get_type()
+
+Returns the HTML's type.
+
+=cut
+
 sub _build_type {
     my $self = shift;
 
@@ -125,6 +211,12 @@ sub _build_type {
 
     return $self->_get_meta_content( \@metas );
 }
+
+=head2 get_keywords()
+
+Returns the HTML's keywords as an array reference.
+
+=cut
 
 sub _build_keywords {
     my $self = shift;
@@ -137,5 +229,47 @@ sub _build_keywords {
 }
 
 __PACKAGE__->meta()->make_immutable();
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 Tore Aursand.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the the Artistic License (2.0). You may obtain a
+copy of the full license at:
+
+L<http://www.perlfoundation.org/artistic_license_2_0>
+
+Any use, modification, and distribution of the Standard or Modified
+Versions is governed by this Artistic License. By using, modifying or
+distributing the Package, you accept this license. Do not use, modify,
+or distribute the Package, if you do not accept this license.
+
+If your Modified Version has been derived from a Modified Version made
+by someone other than you, you are nevertheless required to ensure that
+your Modified Version complies with the requirements of this license.
+
+This license does not grant you the right to use any trademark, service
+mark, tradename, or logo of the Copyright Holder.
+
+This license includes the non-exclusive, worldwide, free-of-charge
+patent license to make, have made, use, offer to sell, sell, import and
+otherwise transfer the Package with respect to any patent claims
+licensable by the Copyright Holder that are necessarily infringed by the
+Package. If you institute patent litigation (including a cross-claim or
+counterclaim) against any party alleging that the Package constitutes
+direct or contributory patent infringement, then this Artistic License
+to you shall terminate on the date that such litigation is filed.
+
+Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
+AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
+THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
+YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
+CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
+CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+=cut
 
 1;
