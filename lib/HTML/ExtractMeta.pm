@@ -7,11 +7,11 @@ HTML::ExtractMeta - Extract metadata from HTML.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Mojo::DOM;
 use Mojo::Util qw( squish );
@@ -30,6 +30,8 @@ use Mojo::Util qw( squish );
     print "Image URL   = " . $EM->get_image_url()   . "\n";
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";
+    print "Locale      = " . $EM->get_locale()      . "\n";
+    print "Author      = " . $EM->get_author()      . "\n";
     print "Keywords    = " . join( ', ', @{$EM->get_keywords()} ) . "\n";
 
 =head1 DESCRIPTION
@@ -47,8 +49,11 @@ has 'title'       => ( isa => 'Str',           is => 'ro', lazy_build => 1, read
 has 'description' => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_description' );
 has 'url'         => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_url'         );
 has 'image_url'   => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_image_url'   );
+has 'image_urls'  => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, reader => 'get_image_urls'  );
 has 'site_name'   => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_site_name'   );
 has 'type'        => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_type'        );
+has 'locale'      => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_locale'      );
+has 'authors'     => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, reader => 'get_authors'     );
 has 'keywords'    => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, reader => 'get_keywords'    );
 
 =head1 METHODS
@@ -95,18 +100,29 @@ sub _get_meta_content {
     my $metas = shift || [];
 
     if ( my $DOM = $self->get_DOM() ) {
+        my @content = ();
+        my %seen    = ();
+
         foreach my $meta ( @{$metas} ) {
             foreach ( qw(name property) ) {
-                if ( my $Element = $DOM->at('meta[' . $_ . '="' . $meta . '"]') ) {
+                foreach my $Element ( $DOM->find('meta[' . $_ . '="' . $meta . '"]')->each() ) {
                     if ( my $content = $Element->attrs('content') ) {
-                        return squish( $content );
+                        $content = squish( $content );
+                        if ( length $content ) {
+                            unless ( $seen{$content} ) {
+                                push( @content, $content );
+                                $seen{ $content }++;
+                            }
+                        }
                     }
                 }
             }
         }
+
+        return \@content;
     }
 
-    return '';
+    return [];
 }
 
 =head2 get_title()
@@ -120,11 +136,12 @@ sub _build_title {
 
     my @metas = (
         'title',
+        'Title',
         'og:title',
         'twitter:title',
     );
 
-    return $self->_get_meta_content( \@metas ) || $self->_get_element_text( 'title' ) || '';
+    return $self->_get_meta_content( \@metas )->[0] || $self->_get_element_text( 'title' ) || '';
 }
 
 =head2 get_description()
@@ -138,11 +155,12 @@ sub _build_description {
 
     my @metas = (
         'description',
+        'Description',
         'og:description',
         'twitter:description',
     );
 
-    return $self->_get_meta_content( \@metas ) || $self->_get_element_text( 'description' ) || '';
+    return $self->_get_meta_content( \@metas )->[0] || $self->_get_element_text( 'description' ) || '';
 }
 
 =head2 get_url()
@@ -159,7 +177,7 @@ sub _build_url {
         'twitter:url',
     );
 
-    return $self->_get_meta_content( \@metas );
+    return $self->_get_meta_content( \@metas )->[0] || '';
 }
 
 =head2 get_image_url()
@@ -171,8 +189,22 @@ Returns the HTML's image URL.
 sub _build_image_url {
     my $self = shift;
 
+    return $self->get_image_urls()->[0] || '';
+}
+
+=head2 get_image_urls()
+
+Returns the HTML's image URLs.
+
+=cut
+
+sub _build_image_urls {
+    my $self = shift;
+
     my @metas = (
         'og:image',
+        'og:image:url',
+        'og:image:secure_url',
         'twitter:image',
     );
 
@@ -193,7 +225,7 @@ sub _build_site_name {
         'twitter:site',
     );
 
-    return $self->_get_meta_content( \@metas );
+    return $self->_get_meta_content( \@metas )->[0] || '';
 }
 
 =head2 get_type()
@@ -207,6 +239,40 @@ sub _build_type {
 
     my @metas = (
         'og:type',
+    );
+
+    return $self->_get_meta_content( \@metas )->[0] || '';
+}
+
+=head2 get_locale()
+
+Returns the HTML's locale.
+
+=cut
+
+sub _build_locale {
+    my $self = shift;
+
+    my @metas = (
+        'og:locale',
+    );
+
+    return $self->_get_meta_content( \@metas )->[0] || '';
+}
+
+=head2 get_authors()
+
+Returns the HTML's authors as an array reference.
+
+=cut
+
+sub _build_authors {
+    my $self = shift;
+
+    my @metas = (
+        'article:author',
+        'Author',
+        'twitter:creator',
     );
 
     return $self->_get_meta_content( \@metas );
@@ -225,7 +291,13 @@ sub _build_keywords {
         'keywords',
     );
 
-    return [ split(/\s*,\s*/, $self->_get_meta_content(\@metas)) ];
+    my $keywords = $self->_get_meta_content( \@metas )->[0];
+    if ( defined $keywords && length $keywords ) {
+        return [ split(/\s*,\s*/, $keywords) ];
+    }
+    else {
+        return [];
+    }
 }
 
 __PACKAGE__->meta()->make_immutable();

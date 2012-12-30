@@ -10,3 +10,4 @@ lib/HTML/ExtractMeta.pm
 t/00.load.t
 t/10.extract.t
 t/html/techcrunch.html
+t/html/wired.html
