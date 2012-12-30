@@ -1,10 +1,10 @@
 # NAME
 
-HTML::ExtractMeta - Extract meta data from HTML.
+HTML::ExtractMeta - Extract metadata from HTML.
 
 # VERSION
 
-Versjon 0.02
+Version 0.03
 
 # SYNOPSIS
 
@@ -24,9 +24,9 @@ Versjon 0.02
 
 # DESCRIPTION
 
-HTML::ExtractMeta is a convenience module for extracting useful meta data from
+HTML::ExtractMeta is a convenience module for extracting useful metadata from
 HTML. It doesn't only look for the traditional meta tags, but also the newer
-ones like "og:foobar" and "twitter:foobar".
+ones like "og:foobar" (OpenGraph) and "twitter:foobar".
 
 # METHODS
 
@@ -69,6 +69,38 @@ Returns the HTML's type.
 ## get\_keywords()
 
 Returns the HTML's keywords as an array reference.
+
+# AUTHOR
+
+Tore Aursand, `<toreau at gmail.com>`
+
+# BUGS
+
+Please report any bugs or feature requests to the web interface at [https://github.com/toreau/HTML-ExtractMeta/issues](https://github.com/toreau/HTML-ExtractMeta/issues).
+
+# SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc HTML::ExtractMeta
+
+You can also look for information at:
+
+- github (report bugs here)
+
+    [https://github.com/toreau/HTML-ExtractMeta/issues](https://github.com/toreau/HTML-ExtractMeta/issues)
+
+- AnnoCPAN: Annotated CPAN documentation
+
+    [http://annocpan.org/dist/HTML-ExtractMeta](http://annocpan.org/dist/HTML-ExtractMeta)
+
+- CPAN Ratings
+
+    [http://cpanratings.perl.org/d/HTML-ExtractMeta](http://cpanratings.perl.org/d/HTML-ExtractMeta)
+
+- Search CPAN
+
+    [http://search.cpan.org/dist/HTML-ExtractMeta/](http://search.cpan.org/dist/HTML-ExtractMeta/)
 
 # LICENSE AND COPYRIGHT
 
