@@ -4,7 +4,7 @@ HTML::ExtractMeta - Extract metadata from HTML.
 
 # VERSION
 
-Version 0.04
+Version 0.05
 
 # SYNOPSIS
 
@@ -21,7 +21,7 @@ Version 0.04
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";
     print "Locale      = " . $EM->get_locale()      . "\n";
-    print "Author      = " . $EM->get_author()      . "\n";
+    print "Authors     = " . join( ', ', @{$EM->get_authors()} )  . "\n";
     print "Keywords    = " . join( ', ', @{$EM->get_keywords()} ) . "\n";
 
 # DESCRIPTION
@@ -58,7 +58,7 @@ Returns the HTML's URL.
 
 ## get\_image\_url()
 
-Returns the HTML's image URL.
+Returns the HTML's first image URL.
 
 ## get\_image\_urls()
 

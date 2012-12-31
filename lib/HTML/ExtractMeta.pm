@@ -7,11 +7,11 @@ HTML::ExtractMeta - Extract metadata from HTML.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Mojo::DOM;
 use Mojo::Util qw( squish );
@@ -31,7 +31,7 @@ use Mojo::Util qw( squish );
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";
     print "Locale      = " . $EM->get_locale()      . "\n";
-    print "Author      = " . $EM->get_author()      . "\n";
+    print "Authors     = " . join( ', ', @{$EM->get_authors()} )  . "\n";
     print "Keywords    = " . join( ', ', @{$EM->get_keywords()} ) . "\n";
 
 =head1 DESCRIPTION
@@ -182,7 +182,7 @@ sub _build_url {
 
 =head2 get_image_url()
 
-Returns the HTML's image URL.
+Returns the HTML's first image URL.
 
 =cut
 

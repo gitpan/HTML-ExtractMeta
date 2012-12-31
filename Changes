@@ -1,6 +1,11 @@
 Revision history for HTML::ExtractMeta
 
 
+0.05    2012-12-30
+        Improved the documentation.
+        Added requirements and their versions to dist.ini.
+
+
 0.04    2012-12-30
         Added the get_locale() method.
         Added the get_image_urls() method.
