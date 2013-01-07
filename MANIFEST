@@ -9,5 +9,7 @@ dist.ini
 lib/HTML/ExtractMeta.pm
 t/00.load.t
 t/10.extract.t
+t/html/cnn.html
 t/html/techcrunch.html
+t/html/washingtonpost.html
 t/html/wired.html

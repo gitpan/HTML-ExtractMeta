@@ -4,7 +4,7 @@ HTML::ExtractMeta - Extract metadata from HTML.
 
 # VERSION
 
-Version 0.05
+Version 0.06
 
 # SYNOPSIS
 
@@ -17,12 +17,13 @@ Version 0.05
     print "Title       = " . $EM->get_title()       . "\n";
     print "Description = " . $EM->get_description() . "\n";
     print "URL         = " . $EM->get_url()         . "\n";
-    print "Image URL   = " . $EM->get_image_url()   . "\n";
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";
     print "Locale      = " . $EM->get_locale()      . "\n";
-    print "Authors     = " . join( ', ', @{$EM->get_authors()} )  . "\n";
-    print "Keywords    = " . join( ', ', @{$EM->get_keywords()} ) . "\n";
+    print "Image URL   = " . $EM->get_image_url()   . "\n";
+    print "Image URLs  = " . join( ', ', @{$EM->get_image_urls()} ) . "\n";
+    print "Authors     = " . join( ', ', @{$EM->get_authors()} )    . "\n";
+    print "Keywords    = " . join( ', ', @{$EM->get_keywords()} )   . "\n";
 
 # DESCRIPTION
 
@@ -58,7 +59,7 @@ Returns the HTML's URL.
 
 ## get\_image\_url()
 
-Returns the HTML's first image URL.
+Returns the HTML's first mentioned image URL.
 
 ## get\_image\_urls()
 
@@ -76,13 +77,17 @@ Returns the HTML's type.
 
 Returns the HTML's locale.
 
+## get\_author()
+
+Returns the HTML's first mentioned author.
+
 ## get\_authors()
 
 Returns the HTML's authors as an array reference.
 
 ## get\_keywords()
 
-Returns the HTML's keywords as an array reference.
+Returns the HTML's unique keywords as an array reference.
 
 # AUTHOR
 
@@ -118,7 +123,7 @@ You can also look for information at:
 
 # LICENSE AND COPYRIGHT
 
-Copyright 2012 Tore Aursand.
+Copyright 2013 Tore Aursand.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a

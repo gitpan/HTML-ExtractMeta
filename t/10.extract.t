@@ -24,7 +24,7 @@ BEGIN {
     ok( $EM->get_site_name()   eq "TechCrunch", 'get_site_name()' );
     ok( $EM->get_type()        eq "article", 'get_type()' );
 
-    is_deeply( $EM->get_keywords(), [] );
+    is_deeply( $EM->get_keywords(), [], 'get_keywords()' );
 }
 
 {
@@ -37,11 +37,44 @@ BEGIN {
     ok( $EM->get_url()          eq "http://www.wired.com/design/2012/12/365-superheroes/", 'get_url()' );
     ok( $EM->get_image_url()    eq "http://www.wired.com/design/wp-content/uploads/2012/12/365-supers-wired-design-350x208.jpg", 'get_image_url()' );
     ok( $EM->get_locale()       eq "en_US", 'get_locale()' );
-    ok( $EM->get_authors()->[0] eq "Joseph Flaherty", 'get_authors()' );
+    ok( $EM->get_author()       eq "Joseph Flaherty", 'get_author()' );
     ok( $EM->get_site_name()    eq "Wired Design", 'get_site_name()' );
     ok( $EM->get_type()         eq "article", 'get_type()' );
 
-    is_deeply( $EM->get_authors(), ['Joseph Flaherty', '@josephflaherty'] );
+    is_deeply( $EM->get_authors(), ['Joseph Flaherty', '@josephflaherty'], 'get_authors()' );
+}
+
+{
+    my $html = read_file( $FindBin::Bin . '/html/cnn.html' );
+
+    my $EM = HTML::ExtractMeta->new( html => $html );
+
+    ok( $EM->get_title()       eq "Charter bus skids on ice, kills 9 in Oregon - CNN.com", 'get_title()' );
+    ok( $EM->get_description() eq "A bus in northern Oregon skidded on ice, crashed through a guardrail and tumbled down an embankment Sunday, killing nine people.", 'get_description()' );
+    ok( $EM->get_url()         eq "http://www.cnn.com/2012/12/30/us/oregon-bus-crash/index.html", 'get_url()' );
+    ok( $EM->get_image_url()   eq "http://i2.cdn.turner.com/cnn/dam/assets/121230105427-oregon-bus-crash-story-top.jpg", 'get_image_url()' );
+    ok( $EM->get_locale()      eq "en-US", 'get_locale()' );
+    ok( $EM->get_author()      eq "CNN Staff", 'get_author()' );
+    ok( $EM->get_site_name()   eq "CNN", 'get_site_name()' );
+    ok( $EM->get_type()        eq "article", 'get_type()' );
+
+    is_deeply( $EM->get_authors(), ['CNN Staff', '@CNNI'], 'get_authors()' );
+    is_deeply( $EM->get_keywords(), [], 'get_keywords()' );
+}
+
+{
+    my $html = read_file( $FindBin::Bin . '/html/washingtonpost.html' );
+
+    my $EM = HTML::ExtractMeta->new( html => $html );
+
+    ok( $EM->get_title()       eq "Officials: Obama to nominate Hagel for Defense, Brennan for CIA", 'get_title()' );
+    ok( $EM->get_description() eq "Announcement of the two major appointments expected Monday.", 'get_description()' );
+    ok( $EM->get_locale()      eq "en-US", 'get_locale()' );
+    ok( $EM->get_author()      eq "Scott Wilson", 'get_author()' );
+    ok( $EM->get_type()        eq "article", 'get_type()' );
+    ok( $EM->get_url()         eq "http://www.washingtonpost.com/politics/officials-obama-to-nominate-hagel-for-defense-brennan-for-cia/2013/01/07/22db7d4e-58c2-11e2-beee-6e38f5215402_story.html", 'get_url()' );
+
+    is_deeply( $EM->get_keywords(), ['president obama', 'obama hagel', 'obama brennan', 'white house 2012', 'white house transition', 'obama cabinet', 'democrats', 'republicans', 'inauguration', '2013 white house', '2013 cabinet', 'petraeus', 'cia', 'counterterrorism', 'nebraska'], 'get_keywords()' );
 }
 
 done_testing();

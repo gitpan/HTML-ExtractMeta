@@ -7,11 +7,11 @@ HTML::ExtractMeta - Extract metadata from HTML.
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Mojo::DOM;
 use Mojo::Util qw( squish );
@@ -27,12 +27,13 @@ use Mojo::Util qw( squish );
     print "Title       = " . $EM->get_title()       . "\n";
     print "Description = " . $EM->get_description() . "\n";
     print "URL         = " . $EM->get_url()         . "\n";
-    print "Image URL   = " . $EM->get_image_url()   . "\n";
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";
     print "Locale      = " . $EM->get_locale()      . "\n";
-    print "Authors     = " . join( ', ', @{$EM->get_authors()} )  . "\n";
-    print "Keywords    = " . join( ', ', @{$EM->get_keywords()} ) . "\n";
+    print "Image URL   = " . $EM->get_image_url()   . "\n";
+    print "Image URLs  = " . join( ', ', @{$EM->get_image_urls()} ) . "\n";
+    print "Authors     = " . join( ', ', @{$EM->get_authors()} )    . "\n";
+    print "Keywords    = " . join( ', ', @{$EM->get_keywords()} )   . "\n";
 
 =head1 DESCRIPTION
 
@@ -53,6 +54,7 @@ has 'image_urls'  => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, read
 has 'site_name'   => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_site_name'   );
 has 'type'        => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_type'        );
 has 'locale'      => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_locale'      );
+has 'author'      => ( isa => 'Str',           is => 'ro', lazy_build => 1, reader => 'get_author'      );
 has 'authors'     => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, reader => 'get_authors'     );
 has 'keywords'    => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, reader => 'get_keywords'    );
 
@@ -104,7 +106,7 @@ sub _get_meta_content {
         my %seen    = ();
 
         foreach my $meta ( @{$metas} ) {
-            foreach ( qw(name property) ) {
+            foreach ( qw(name property itemprop) ) {
                 foreach my $Element ( $DOM->find('meta[' . $_ . '="' . $meta . '"]')->each() ) {
                     if ( my $content = $Element->attrs('content') ) {
                         $content = squish( $content );
@@ -139,6 +141,7 @@ sub _build_title {
         'Title',
         'og:title',
         'twitter:title',
+        'DC.title',
     );
 
     return $self->_get_meta_content( \@metas )->[0] || $self->_get_element_text( 'title' ) || '';
@@ -182,7 +185,7 @@ sub _build_url {
 
 =head2 get_image_url()
 
-Returns the HTML's first image URL.
+Returns the HTML's first mentioned image URL.
 
 =cut
 
@@ -255,9 +258,23 @@ sub _build_locale {
 
     my @metas = (
         'og:locale',
+        'inLanguage',
+        'Content-Language',
     );
 
     return $self->_get_meta_content( \@metas )->[0] || '';
+}
+
+=head2 get_author()
+
+Returns the HTML's first mentioned author.
+
+=cut
+
+sub _build_author {
+    my $self = shift;
+
+    return $self->get_authors()->[0] || '';
 }
 
 =head2 get_authors()
@@ -271,8 +288,10 @@ sub _build_authors {
 
     my @metas = (
         'article:author',
+        'author',
         'Author',
         'twitter:creator',
+        'DC.creator',
     );
 
     return $self->_get_meta_content( \@metas );
@@ -280,7 +299,7 @@ sub _build_authors {
 
 =head2 get_keywords()
 
-Returns the HTML's keywords as an array reference.
+Returns the HTML's unique keywords as an array reference.
 
 =cut
 
@@ -293,7 +312,17 @@ sub _build_keywords {
 
     my $keywords = $self->_get_meta_content( \@metas )->[0];
     if ( defined $keywords && length $keywords ) {
-        return [ split(/\s*,\s*/, $keywords) ];
+        my @keywords = ();
+        my %seen     = ();
+
+        foreach my $keyword ( split(/\s*,\s*/, $keywords) ) {
+            unless ( $seen{$keyword} ) {
+                push( @keywords, $keyword );
+                $seen{ $keyword }++;
+            }
+        }
+
+        return \@keywords;
     }
     else {
         return [];
@@ -340,7 +369,7 @@ L<http://search.cpan.org/dist/HTML-ExtractMeta/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012 Tore Aursand.
+Copyright 2013 Tore Aursand.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a

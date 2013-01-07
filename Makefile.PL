@@ -20,13 +20,14 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "HTML::ExtractMeta",
   "PREREQ_PM" => {
+    "ExtUtils::MakeMaker" => "6.64",
     "File::Slurp" => "9999.19",
     "FindBin" => "1.42",
-    "Mojolicious" => "3.69",
+    "Mojolicious" => "3.71",
     "Moose" => "2.0604",
     "Test::More" => "0.98"
   },
-  "VERSION" => "0.05",
+  "VERSION" => "0.06",
   "test" => {
     "TESTS" => "t/*.t"
   }
