@@ -1,10 +1,10 @@
 # NAME
 
-HTML::ExtractMeta - Extract metadata from HTML.
+HTML::ExtractMeta - Extract useful metadata from HTML.
 
 # VERSION
 
-Version 0.06
+Version 0.07
 
 # SYNOPSIS
 
@@ -16,6 +16,7 @@ Version 0.06
 
     print "Title       = " . $EM->get_title()       . "\n";
     print "Description = " . $EM->get_description() . "\n";
+    print "Author      = " . $EM->get_author()      . "\n";
     print "URL         = " . $EM->get_url()         . "\n";
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";

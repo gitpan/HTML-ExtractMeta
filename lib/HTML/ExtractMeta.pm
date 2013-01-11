@@ -1,20 +1,20 @@
 package HTML::ExtractMeta;
-use Moose;
-
-=head1 NAME
-
-HTML::ExtractMeta - Extract metadata from HTML.
-
-=head1 VERSION
-
-Version 0.06
-
-=cut
-
-our $VERSION = '0.06';
+use Mouse;
 
 use Mojo::DOM;
 use Mojo::Util qw( squish );
+
+=head1 NAME
+
+HTML::ExtractMeta - Extract useful metadata from HTML.
+
+=head1 VERSION
+
+Version 0.07
+
+=cut
+
+our $VERSION = '0.07';
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,7 @@ use Mojo::Util qw( squish );
 
     print "Title       = " . $EM->get_title()       . "\n";
     print "Description = " . $EM->get_description() . "\n";
+    print "Author      = " . $EM->get_author()      . "\n";
     print "URL         = " . $EM->get_url()         . "\n";
     print "Site name   = " . $EM->get_site_name()   . "\n";
     print "Type        = " . $EM->get_type()        . "\n";
@@ -79,7 +80,6 @@ sub _build_DOM {
 
     my $DOM = Mojo::DOM->new();
     $DOM->parse( $self->get_html() );
-    $DOM->charset( 'UTF-8' );
 
     return $DOM;
 }

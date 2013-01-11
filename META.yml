@@ -1,5 +1,5 @@
 ---
-abstract: 'Extract metadata from HTML.'
+abstract: 'Extract useful metadata from HTML.'
 author:
   - 'Tore Aursand <toreau@gmail.com>'
 build_requires: {}
@@ -16,7 +16,7 @@ requires:
   ExtUtils::MakeMaker: 6.64
   File::Slurp: 9999.19
   FindBin: 1.42
-  Mojolicious: 3.71
-  Moose: 2.0604
+  Mojolicious: 3.74
+  Mouse: 1.02
   Test::More: 0.98
-version: 0.06
+version: 0.07

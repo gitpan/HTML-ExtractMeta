@@ -1,5 +1,9 @@
 Revision history for HTML::ExtractMeta
 
+0.07    2013-01-11
+        Replaced Moose requirement with Mouse.
+        Added more tests.
+        Improved the documentation.
 
 0.06    2013-01-07
         Added the get_author() method.
@@ -12,11 +16,9 @@ Revision history for HTML::ExtractMeta
         Improved the "locale" identification method.
         Improved the documentation.
 
-
 0.05    2012-12-31
         Improved the documentation.
         Added requirements and their versions to dist.ini.
-
 
 0.04    2012-12-30
         Added the get_locale() method.
@@ -24,14 +26,11 @@ Revision history for HTML::ExtractMeta
         Added the get_authors() method.
         Added more tests.
 
-
 0.03    2012-12-30
         Minor fixes in the documentation.
 
-
 0.02    2012-12-30
         Added documentation.
-
 
 0.01    2012-12-30
         First version, released on an unsuspecting world.

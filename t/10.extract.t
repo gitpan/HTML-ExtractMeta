@@ -77,4 +77,20 @@ BEGIN {
     is_deeply( $EM->get_keywords(), ['president obama', 'obama hagel', 'obama brennan', 'white house 2012', 'white house transition', 'obama cabinet', 'democrats', 'republicans', 'inauguration', '2013 white house', '2013 cabinet', 'petraeus', 'cia', 'counterterrorism', 'nebraska'], 'get_keywords()' );
 }
 
+{
+    my $html = read_file( $FindBin::Bin . '/html/tv2.html' );
+
+    my $EM = HTML::ExtractMeta->new( html => $html );
+
+    ok( $EM->get_title()       eq "Rosenborg har budt 5 mill. for Tom Høgli", 'get_title()' );
+    ok( $EM->get_description() eq "Høyrebacken er sterkt ønsket på Lerkendal.", 'get_description()' );
+    ok( $EM->get_type()        eq "article", 'get_type()' );
+    ok( $EM->get_site_name()   eq "TV 2", 'get_site_name()' );
+    ok( $EM->get_url()         eq "http://www.tv2.no/sport/fotball/tippeligaen/rosenborg-har-budt-5-mill-for-tom-hoegli-3963456.html", 'get_url()' );
+    ok( $EM->get_image_url()   eq "http://pub.tv2.no/multimedia/TV2/archive/01025/hoftunhogli_1025446e.jpg", 'get_image_url()' );
+    ok( $EM->get_author()      eq "Ida-Marie Vatn", 'get_author()' );
+
+    is_deeply( $EM->get_authors(), ['Ida-Marie Vatn', 'Petter Moen Nilsen'], 'get_authors()' );
+}
+
 done_testing();

@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Extract metadata from HTML.",
+  "ABSTRACT" => "Extract useful metadata from HTML.",
   "AUTHOR" => "Tore Aursand <toreau\@gmail.com>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -23,11 +23,11 @@ my %WriteMakefileArgs = (
     "ExtUtils::MakeMaker" => "6.64",
     "File::Slurp" => "9999.19",
     "FindBin" => "1.42",
-    "Mojolicious" => "3.71",
-    "Moose" => "2.0604",
+    "Mojolicious" => "3.74",
+    "Mouse" => "1.02",
     "Test::More" => "0.98"
   },
-  "VERSION" => "0.06",
+  "VERSION" => "0.07",
   "test" => {
     "TESTS" => "t/*.t"
   }
