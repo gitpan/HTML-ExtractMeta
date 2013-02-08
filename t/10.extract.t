@@ -17,7 +17,7 @@ BEGIN {
 
     my $EM = HTML::ExtractMeta->new( html => $html );
 
-    ok( $EM->get_title()       eq "The 10 Best iOS And Android Games Of 2012 | TechCrunch", 'get_title()' );
+    ok( $EM->get_title()       eq "The 10 Best iOS And Android Games Of 2012 TechCrunch", 'get_title()' );
     ok( $EM->get_description() eq "Editor's note: Stephen Danos is the associate editor for the mobile app discovery site Appolicious. This year’s most captivating games either pushe..", 'get_description()' );
     ok( $EM->get_url()         eq "http://techcrunch.com/2012/12/29/the-10-best-ios-and-android-games-of-2012/", 'get_url()' );
     ok( $EM->get_image_url()   eq "http://tctechcrunch2011.files.wordpress.com/2012/12/app-stores.jpg?w=136", 'get_image_url()' );
@@ -49,7 +49,7 @@ BEGIN {
 
     my $EM = HTML::ExtractMeta->new( html => $html );
 
-    ok( $EM->get_title()       eq "Charter bus skids on ice, kills 9 in Oregon - CNN.com", 'get_title()' );
+    ok( $EM->get_title()       eq "Charter bus skids on ice, kills 9 in Oregon", 'get_title()' );
     ok( $EM->get_description() eq "A bus in northern Oregon skidded on ice, crashed through a guardrail and tumbled down an embankment Sunday, killing nine people.", 'get_description()' );
     ok( $EM->get_url()         eq "http://www.cnn.com/2012/12/30/us/oregon-bus-crash/index.html", 'get_url()' );
     ok( $EM->get_image_url()   eq "http://i2.cdn.turner.com/cnn/dam/assets/121230105427-oregon-bus-crash-story-top.jpg", 'get_image_url()' );

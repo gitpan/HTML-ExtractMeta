@@ -10,11 +10,11 @@ HTML::ExtractMeta - Extract useful metadata from HTML.
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 =head1 SYNOPSIS
 
@@ -127,6 +127,13 @@ sub _get_meta_content {
     return [];
 }
 
+sub _get_shortest_array_element {
+    my $self     = shift;
+    my $arrayref = shift || [];
+
+    return [ sort { length($a) <=> length($b) } @{$arrayref} ];
+}
+
 =head2 get_title()
 
 Returns the HTML's title.
@@ -137,14 +144,16 @@ sub _build_title {
     my $self = shift;
 
     my @metas = (
-        'title',
-        'Title',
         'og:title',
         'twitter:title',
         'DC.title',
+        'title',
+        'Title',
     );
 
-    return $self->_get_meta_content( \@metas )->[0] || $self->_get_element_text( 'title' ) || '';
+    my $meta = $self->_get_meta_content( \@metas );
+
+    return $self->_get_shortest_array_element( $meta )->[0] || $self->_get_element_text( 'title' ) || '';
 }
 
 =head2 get_description()
@@ -157,13 +166,15 @@ sub _build_description {
     my $self = shift;
 
     my @metas = (
-        'description',
-        'Description',
         'og:description',
         'twitter:description',
+        'description',
+        'Description',
     );
 
-    return $self->_get_meta_content( \@metas )->[0] || $self->_get_element_text( 'description' ) || '';
+    my $meta = $self->_get_meta_content( \@metas );
+
+    return $self->_get_shortest_array_element( $meta )->[0] || $self->_get_element_text( 'description' ) || '';
 }
 
 =head2 get_url()
@@ -369,7 +380,7 @@ L<http://search.cpan.org/dist/HTML-ExtractMeta/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2013 Tore Aursand.
+Copyright 2012-2013 Tore Aursand.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a

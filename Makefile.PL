@@ -23,11 +23,11 @@ my %WriteMakefileArgs = (
     "ExtUtils::MakeMaker" => "6.64",
     "File::Slurp" => "9999.19",
     "FindBin" => "1.42",
-    "Mojolicious" => "3.74",
-    "Mouse" => "1.02",
+    "Mojolicious" => "3.84",
+    "Mouse" => "1.05",
     "Test::More" => "0.98"
   },
-  "VERSION" => "0.07",
+  "VERSION" => "0.08",
   "test" => {
     "TESTS" => "t/*.t"
   }
