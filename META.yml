@@ -2,7 +2,11 @@
 abstract: 'Extract useful metadata from HTML.'
 author:
   - 'Tore Aursand <toreau@gmail.com>'
-build_requires: {}
+build_requires:
+  ExtUtils::MakeMaker: 6.64
+  File::Slurp: 9999.19
+  FindBin: 1.42
+  Test::More: 0.98
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
@@ -13,10 +17,6 @@ meta-spec:
   version: 1.4
 name: HTML-ExtractMeta
 requires:
-  ExtUtils::MakeMaker: 6.64
-  File::Slurp: 9999.19
-  FindBin: 1.42
   Mojolicious: 3.84
   Mouse: 1.05
-  Test::More: 0.98
-version: 0.08
+version: 0.09

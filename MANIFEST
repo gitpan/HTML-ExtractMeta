@@ -10,6 +10,7 @@ lib/HTML/ExtractMeta.pm
 t/00.load.t
 t/10.extract.t
 t/html/cnn.html
+t/html/seattletimes.html
 t/html/techcrunch.html
 t/html/tv2.html
 t/html/washingtonpost.html

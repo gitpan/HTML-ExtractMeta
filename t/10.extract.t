@@ -93,4 +93,18 @@ BEGIN {
     is_deeply( $EM->get_authors(), ['Ida-Marie Vatn', 'Petter Moen Nilsen'], 'get_authors()' );
 }
 
+{
+    my $html = read_file( $FindBin::Bin . '/html/seattletimes.html' );
+
+    my $EM = HTML::ExtractMeta->new( html => $html );
+
+    ok( $EM->get_title       eq "Are these Mariners for real?", 'get_title()' );
+    ok( $EM->get_description eq "Making any guarantees this early in the spring is foolish, but there is a definite vibe", 'get_description()' );
+    ok( $EM->get_type        eq "article", 'get_type()' );
+    ok( $EM->get_site_name   eq "The Seattle Times", 'get_site_name()' );
+    ok( $EM->get_url         eq "", 'get_url()' );
+    ok( $EM->get_image_url   eq "http://seattletimes.com/ABPub/2013/03/02/2020474237.jpg", 'get_image_url()' );
+    ok( $EM->get_author      eq "", 'get_author()' );
+}
+
 done_testing();

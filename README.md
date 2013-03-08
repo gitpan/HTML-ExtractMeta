@@ -4,7 +4,7 @@ HTML::ExtractMeta - Extract useful metadata from HTML.
 
 # VERSION
 
-Version 0.08
+Version 0.09
 
 # SYNOPSIS
 

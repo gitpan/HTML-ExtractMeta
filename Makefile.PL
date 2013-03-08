@@ -11,7 +11,12 @@ use ExtUtils::MakeMaker 6.30;
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Extract useful metadata from HTML.",
   "AUTHOR" => "Tore Aursand <toreau\@gmail.com>",
-  "BUILD_REQUIRES" => {},
+  "BUILD_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.64",
+    "File::Slurp" => "9999.19",
+    "FindBin" => "1.42",
+    "Test::More" => "0.98"
+  },
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
   },
@@ -20,14 +25,10 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "HTML::ExtractMeta",
   "PREREQ_PM" => {
-    "ExtUtils::MakeMaker" => "6.64",
-    "File::Slurp" => "9999.19",
-    "FindBin" => "1.42",
     "Mojolicious" => "3.84",
-    "Mouse" => "1.05",
-    "Test::More" => "0.98"
+    "Mouse" => "1.05"
   },
-  "VERSION" => "0.08",
+  "VERSION" => "0.09",
   "test" => {
     "TESTS" => "t/*.t"
   }
