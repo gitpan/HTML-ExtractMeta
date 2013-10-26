@@ -1,5 +1,11 @@
 Revision history for HTML::ExtractMeta
 
+0.10    2013-10-26
+        - Updated Mojolicious requirement to version 4.50.
+        - Updated Mouse requirement to version 1.13.
+        - Fixed deprecated requirements.
+        - Updated the documentation.
+
 0.09    2013-03-08
         - Cleaned up prereqs.
         - Improved tests.

@@ -1,5 +1,6 @@
 package HTML::ExtractMeta;
 use Mouse;
+use namespace::autoclean;
 
 use Mojo::DOM;
 use Mojo::Util qw( squish );
@@ -14,27 +15,27 @@ Version 0.09
 
 =cut
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 =head1 SYNOPSIS
 
     use HTML::ExtractMeta;
 
-    my $EM = HTML::ExtractMeta->new(
+    my $em = HTML::ExtractMeta->new(
         html => $html, # required
     );
 
-    print "Title       = " . $EM->get_title()       . "\n";
-    print "Description = " . $EM->get_description() . "\n";
-    print "Author      = " . $EM->get_author()      . "\n";
-    print "URL         = " . $EM->get_url()         . "\n";
-    print "Site name   = " . $EM->get_site_name()   . "\n";
-    print "Type        = " . $EM->get_type()        . "\n";
-    print "Locale      = " . $EM->get_locale()      . "\n";
-    print "Image URL   = " . $EM->get_image_url()   . "\n";
-    print "Image URLs  = " . join( ', ', @{$EM->get_image_urls()} ) . "\n";
-    print "Authors     = " . join( ', ', @{$EM->get_authors()} )    . "\n";
-    print "Keywords    = " . join( ', ', @{$EM->get_keywords()} )   . "\n";
+    print "Title       = " . $em->get_title()       . "\n";
+    print "Description = " . $em->get_description() . "\n";
+    print "Author      = " . $em->get_author()      . "\n";
+    print "URL         = " . $em->get_url()         . "\n";
+    print "Site name   = " . $em->get_site_name()   . "\n";
+    print "Type        = " . $em->get_type()        . "\n";
+    print "Locale      = " . $em->get_locale()      . "\n";
+    print "Image URL   = " . $em->get_image_url()   . "\n";
+    print "Image URLs  = " . join( ', ', @{$em->get_image_urls()} ) . "\n";
+    print "Authors     = " . join( ', ', @{$em->get_authors()} )    . "\n";
+    print "Keywords    = " . join( ', ', @{$em->get_keywords()} )   . "\n";
 
 =head1 DESCRIPTION
 
@@ -65,7 +66,7 @@ has 'keywords'    => ( isa => 'ArrayRef[Str]', is => 'ro', lazy_build => 1, read
 
 Returns a new HTML::ExtractMeta instance. Requires HTML as input argument;
 
-    my $EM = HTML::ExtractMeta->new(
+    my $em = HTML::ExtractMeta->new(
         html => $html,
     );
 
@@ -78,8 +79,9 @@ Returns the Mojo::DOM object for the current HTML.
 sub _build_DOM {
     my $self = shift;
 
-    my $DOM = Mojo::DOM->new();
-    $DOM->parse( $self->get_html() );
+    my $DOM = Mojo::DOM->new;
+
+    $DOM->parse( $self->get_html );
 
     return $DOM;
 }
@@ -88,9 +90,9 @@ sub _get_element_text {
     my $self = shift;
     my $name = shift;
 
-    if ( my $DOM = $self->get_DOM() ) {
+    if ( my $DOM = $self->get_DOM ) {
         if ( my $Element = $DOM->at($name) ) {
-            return squish( $Element->text() );
+            return squish( $Element->text );
         }
     }
 
@@ -101,14 +103,14 @@ sub _get_meta_content {
     my $self  = shift;
     my $metas = shift || [];
 
-    if ( my $DOM = $self->get_DOM() ) {
+    if ( my $DOM = $self->get_DOM ) {
         my @content = ();
         my %seen    = ();
 
         foreach my $meta ( @{$metas} ) {
             foreach ( qw(name property itemprop) ) {
                 foreach my $Element ( $DOM->find('meta[' . $_ . '="' . $meta . '"]')->each() ) {
-                    if ( my $content = $Element->attrs('content') ) {
+                    if ( my $content = $Element->attr('content') ) {
                         $content = squish( $content );
                         if ( length $content ) {
                             unless ( $seen{$content} ) {
@@ -340,7 +342,7 @@ sub _build_keywords {
     }
 }
 
-__PACKAGE__->meta()->make_immutable();
+__PACKAGE__->meta->make_immutable;
 
 =head1 AUTHOR
 
