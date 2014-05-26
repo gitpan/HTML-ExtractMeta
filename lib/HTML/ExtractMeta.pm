@@ -1,5 +1,5 @@
 package HTML::ExtractMeta;
-use Mouse;
+use Moose;
 use namespace::autoclean;
 
 use Mojo::DOM;
@@ -11,11 +11,11 @@ HTML::ExtractMeta - Extract useful metadata from HTML.
 
 =head1 VERSION
 
-Version 0.09
+Version 0.11
 
 =cut
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 =head1 SYNOPSIS
 
@@ -25,17 +25,17 @@ our $VERSION = '0.10';
         html => $html, # required
     );
 
-    print "Title       = " . $em->get_title()       . "\n";
-    print "Description = " . $em->get_description() . "\n";
-    print "Author      = " . $em->get_author()      . "\n";
-    print "URL         = " . $em->get_url()         . "\n";
-    print "Site name   = " . $em->get_site_name()   . "\n";
-    print "Type        = " . $em->get_type()        . "\n";
-    print "Locale      = " . $em->get_locale()      . "\n";
-    print "Image URL   = " . $em->get_image_url()   . "\n";
-    print "Image URLs  = " . join( ', ', @{$em->get_image_urls()} ) . "\n";
-    print "Authors     = " . join( ', ', @{$em->get_authors()} )    . "\n";
-    print "Keywords    = " . join( ', ', @{$em->get_keywords()} )   . "\n";
+    print "Title       = " . $em->get_title       . "\n";
+    print "Description = " . $em->get_description . "\n";
+    print "Author      = " . $em->get_author      . "\n";
+    print "URL         = " . $em->get_url         . "\n";
+    print "Site name   = " . $em->get_site_name   . "\n";
+    print "Type        = " . $em->get_type        . "\n";
+    print "Locale      = " . $em->get_locale      . "\n";
+    print "Image URL   = " . $em->get_image_url   . "\n";
+    print "Image URLs  = " . join( ', ', @{$em->get_image_urls} ) . "\n";
+    print "Authors     = " . join( ', ', @{$em->get_authors} )    . "\n";
+    print "Keywords    = " . join( ', ', @{$em->get_keywords} )   . "\n";
 
 =head1 DESCRIPTION
 
@@ -70,7 +70,7 @@ Returns a new HTML::ExtractMeta instance. Requires HTML as input argument;
         html => $html,
     );
 
-=head2 get_dom()
+=head2 get_dom
 
 Returns the Mojo::DOM object for the current HTML.
 
@@ -136,7 +136,7 @@ sub _get_shortest_array_element {
     return [ sort { length($a) <=> length($b) } @{$arrayref} ];
 }
 
-=head2 get_title()
+=head2 get_title
 
 Returns the HTML's title.
 
@@ -158,7 +158,7 @@ sub _build_title {
     return $self->_get_shortest_array_element( $meta )->[0] || $self->_get_element_text( 'title' ) || '';
 }
 
-=head2 get_description()
+=head2 get_description
 
 Returns the HTML's description.
 
@@ -179,7 +179,7 @@ sub _build_description {
     return $self->_get_shortest_array_element( $meta )->[0] || $self->_get_element_text( 'description' ) || '';
 }
 
-=head2 get_url()
+=head2 get_url
 
 Returns the HTML's URL.
 
@@ -196,7 +196,7 @@ sub _build_url {
     return $self->_get_meta_content( \@metas )->[0] || '';
 }
 
-=head2 get_image_url()
+=head2 get_image_url
 
 Returns the HTML's first mentioned image URL.
 
@@ -208,7 +208,7 @@ sub _build_image_url {
     return $self->get_image_urls()->[0] || '';
 }
 
-=head2 get_image_urls()
+=head2 get_image_urls
 
 Returns the HTML's image URLs.
 
@@ -227,7 +227,7 @@ sub _build_image_urls {
     return $self->_get_meta_content( \@metas );
 }
 
-=head2 get_site_name()
+=head2 get_site_name
 
 Returns the HTML's site name.
 
@@ -244,7 +244,7 @@ sub _build_site_name {
     return $self->_get_meta_content( \@metas )->[0] || '';
 }
 
-=head2 get_type()
+=head2 get_type
 
 Returns the HTML's type.
 
@@ -260,7 +260,7 @@ sub _build_type {
     return $self->_get_meta_content( \@metas )->[0] || '';
 }
 
-=head2 get_locale()
+=head2 get_locale
 
 Returns the HTML's locale.
 
@@ -278,7 +278,7 @@ sub _build_locale {
     return $self->_get_meta_content( \@metas )->[0] || '';
 }
 
-=head2 get_author()
+=head2 get_author
 
 Returns the HTML's first mentioned author.
 
@@ -290,7 +290,7 @@ sub _build_author {
     return $self->get_authors()->[0] || '';
 }
 
-=head2 get_authors()
+=head2 get_authors
 
 Returns the HTML's authors as an array reference.
 
@@ -310,7 +310,7 @@ sub _build_authors {
     return $self->_get_meta_content( \@metas );
 }
 
-=head2 get_keywords()
+=head2 get_keywords
 
 Returns the HTML's unique keywords as an array reference.
 
@@ -350,7 +350,7 @@ Tore Aursand, C<< <toreau at gmail.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to the web interface at L<https://github.com/toreau/HTML-ExtractMeta/issues>.
+Please report any bugs or feature requests to the web interface at L<https://rt.cpan.org/Public/Dist/Display.html?Name=HTML-ExtractMeta>.
 
 =head1 SUPPORT
 
@@ -361,10 +361,6 @@ You can find documentation for this module with the perldoc command.
 You can also look for information at:
 
 =over 4
-
-=item * github (report bugs here)
-
-L<https://github.com/toreau/HTML-ExtractMeta/issues>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
@@ -382,7 +378,7 @@ L<http://search.cpan.org/dist/HTML-ExtractMeta/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012-2013 Tore Aursand.
+Copyright 2012-2014 Tore Aursand.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a

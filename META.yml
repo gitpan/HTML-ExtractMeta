@@ -3,20 +3,21 @@ abstract: 'Extract useful metadata from HTML.'
 author:
   - 'Tore Aursand <toreau@gmail.com>'
 build_requires:
-  ExtUtils::MakeMaker: 6.64
-  File::Slurp: 9999.19
-  FindBin: 1.42
-  Test::More: 0.98
+  ExtUtils::MakeMaker: '6.64'
+  File::Slurp: '9999.19'
+  FindBin: '0'
+  Test::More: '0.98'
 configure_requires:
-  ExtUtils::MakeMaker: 6.30
+  ExtUtils::MakeMaker: '6.30'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141170'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: HTML-ExtractMeta
 requires:
-  Mojolicious: 4.50
-  Mouse: 1.13
-version: 0.10
+  Mojolicious: '4.50'
+  Moose: '2.0604'
+  namespace::autoclean: '0.15'
+version: '0.11'
